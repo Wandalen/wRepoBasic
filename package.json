@@ -1,0 +1,44 @@
+{
+  "name": "wrepobasic",
+  "version": "0.3.380",
+  "description": "Collection of tools to use git programmatically.",
+  "author": "Kostiantyn Wandalen <wanalen@01.school>",
+  "license": "MIT",
+  "main": "proto/node_modules/wrepobasic",
+  "files": [
+    "proto/wtools/amid/l3/git",
+    "out",
+    "proto/node_modules",
+    "proto/node_modules/Tools",
+    "proto/node_modules/wrepobasic"
+  ],
+  "scripts": {
+    "test": "wtest .run 'proto/**' rapidity:-3",
+    "docgen": "wdocgen proto"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wandalen/wRepoBasic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Wandalen/wRepoBasic/issues"
+  },
+  "dependencies": {
+    "wTools": "gamma",
+    "wremote": "gamma",
+    "wprocess": "gamma",
+    "wintrospectorextra": "gamma",
+    "wfilesbasic": "gamma",
+    "wfilesarchive": "gamma",
+    "wCopyable": "gamma",
+    "ini": "=2.0.0",
+    "@octokit/rest": "=18.5.2"
+  },
+  "devDependencies": {
+    "wTesting": "gamma",
+    "eslint": "7.32.0"
+  },
+  "keywords": [
+    "wTools"
+  ]
+}
