@@ -309,6 +309,91 @@ providerAmend.defaults =
   src : null,
 }
 
+//
+
+function issuesGet( o )
+{
+  _.routine.options( issuesGet, o );
+  _.assert( _.str.is( o.remotePath ) || _.aux.is( o.remotePath ) );
+
+  o.remotePath = _.git.path.normalize( o.remotePath );
+  const parsed = _.git.path.parse({ remotePath : o.remotePath, full : 0, atomic : 0, objects : 1 });
+
+  const provider = _.repo.providerForPath({ remotePath : o.remotePath });
+  const o2 = _.props.extend( null, o );
+  o2.remotePath = parsed;
+
+  const ready = provider.repositoryIssuesGetAct( o2 );
+  ready.finally( ( err, arg ) =>
+  {
+    if( err )
+    throw _.err( `Error code : ${ err.status }. ${ err.message }` );
+    return arg || null;
+  });
+
+  if( o.sync )
+  {
+    ready.deasync();
+    return ready.sync();
+  }
+
+  return ready;
+}
+
+issuesGet.defaults =
+{
+  remotePath : null,
+  token : null,
+  state : 'all',
+  sync : 0,
+};
+
+//
+
+function issuesCreate( o )
+{
+  let localProvider = _.fileProvider;
+  let path = localProvider.path;
+  _.routine.options( issuesCreate, o );
+  _.assert( _.str.is( o.remotePath ) || _.aux.is( o.remotePath ) );
+  _.assert( _.str.defined( o.token ), 'Expects token {-o.token-}' );
+
+  if( _.str.is( o.issues ) )
+  o.issues = localProvider.fileReadUnknown( path.join( path.current(), o.issues ) );
+  _.assert( _.array.is( o.issues ) || _.aux.is( o.issues ) );
+
+  o.remotePath = _.git.path.normalize( o.remotePath );
+  const parsed = _.git.path.parse({ remotePath : o.remotePath, full : 0, atomic : 0, objects : 1 });
+
+  const provider = _.repo.providerForPath({ remotePath : o.remotePath });
+  const o2 = _.props.extend( null, o );
+  o2.remotePath = parsed;
+
+  const ready = provider.repositoryIssuesCreateAct( o2 );
+  ready.finally( ( err, arg ) =>
+  {
+    if( err )
+    throw _.err( `Error code : ${ err.status }. ${ err.message }` );
+    return arg || null;
+  });
+
+  if( o.sync )
+  {
+    ready.deasync();
+    return ready.sync();
+  }
+
+  return ready;
+}
+
+issuesCreate.defaults =
+{
+  remotePath : null,
+  token : null,
+  issues : null,
+  sync : 0,
+};
+
 // --
 // pr
 // --
@@ -732,6 +817,102 @@ releaseDelete.defaults =
   logger : 2,
 };
 
+// --
+// repository
+// --
+
+function repositoryInit( o )
+{
+  _.routine.options_( repositoryInit, o );
+  _.assert( _.str.is( o.remotePath ) || _.aux.is( o.remotePath ) );
+  _.sure( _.str.defined( o.token ), 'An access token is required to create a repository.' );
+
+  /* */
+
+  o.remotePath = _.git.path.normalize( o.remotePath );
+  const parsed = _.git.path.parse({ remotePath : o.remotePath, full : 0, atomic : 0, objects : 1 });
+
+  const provider = _.repo.providerForPath({ remotePath : o.remotePath });
+  const o2 = _.props.extend( null, o );
+  o2.remotePath = parsed;
+
+  const ready = provider.repositoryInitAct( o2 );
+  ready.finally( ( err, arg ) =>
+  {
+    if( err )
+    {
+      _.error.attend( err );
+      if( o.throwing )
+      throw _.err( `Error code : ${ err.status }. ${ err.message }` );
+    }
+    return arg || false;
+  });
+
+  if( o.sync )
+  {
+    ready.deasync();
+    return ready.sync();
+  }
+
+  return ready;
+}
+
+repositoryInit.defaults =
+{
+  remotePath : null,
+  token : null,
+  description : null,
+  throwing : 1,
+  sync : 0,
+};
+
+//
+
+function repositoryDelete( o )
+{
+  _.routine.options_( repositoryDelete, o );
+  _.assert( _.str.is( o.remotePath ) || _.aux.is( o.remotePath ) );
+  _.sure( _.str.defined( o.token ), 'An access token is required to delete the repository.' );
+
+  /* */
+
+  o.remotePath = _.git.path.normalize( o.remotePath );
+  const parsed = _.git.path.parse({ remotePath : o.remotePath, full : 0, atomic : 0, objects : 1 });
+
+  const provider = _.repo.providerForPath({ remotePath : o.remotePath });
+  if( !provider.repositoryDeleteAct )
+  throw _.err( `Can't remove remote repository, because the API is not implemented for provider ${ provider }.` );
+
+  const o2 = _.props.extend( null, o );
+  o2.remotePath = parsed;
+  const ready = provider.repositoryDeleteAct( o2 );
+  ready.finally( ( err, arg ) =>
+  {
+    if( err )
+    {
+      _.error.attend( err );
+      if( o.throwing )
+      throw _.err( `Error code : ${ err.status }. ${ err.message }` );
+    }
+    return arg || false;
+  });
+
+  if( o.sync )
+  {
+    ready.deasync();
+    return ready.sync();
+  }
+
+  return ready;
+}
+
+repositoryDelete.defaults =
+{
+  remotePath : null,
+  token : null,
+  throwing : 1,
+  sync : 0,
+};
 
 // --
 // program
@@ -865,6 +1046,11 @@ let Extension =
   providerForPath,
   providerAmend,
 
+  // issue
+
+  issuesGet,
+  issuesCreate,
+
   // pr
 
   pullIs,
@@ -883,6 +1069,11 @@ let Extension =
   releaseMake,
   releaseDeleteAct,
   releaseDelete,
+
+  // repository
+
+  repositoryInit,
+  repositoryDelete,
 
   // program
 

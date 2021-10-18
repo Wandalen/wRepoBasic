@@ -7,7 +7,7 @@ if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
   _.include( 'wTesting' );
-  require( '../git/entry/GitTools.ss' );;
+  require( '../git/entry/RepoBasic.ss' );;
 }
 
 const _ = _global_.wTools;
@@ -65,7 +65,7 @@ function _request_functor( test )
     {
       routine
       ({
-        remotePath : 'https://github.com/user/NewRepoBasic',
+        remotePath : 'https://github.com/user/NewRepo',
         throwing : 1,
         sync : 1
       })
@@ -74,7 +74,7 @@ function _request_functor( test )
 
   var got = routine
   ({
-    remotePath : 'https://github.com/user/NewRepoBasic',
+    remotePath : 'https://github.com/user/NewRepo',
     throwing : 0,
     sync : 1
   });
@@ -325,6 +325,285 @@ function providerForPath( test )
 
 //
 
+function issuesGet( test )
+{
+  const token = process.env.PRIVATE_WTOOLS_BOT_TOKEN;
+  if( !token )
+  return test.true( true );
+
+  const a = test.assetFor( 'basic' );
+  const repository = 'https://github.com/Learn-Together-Pro/Blockchain.git';
+
+  /* qqq2 : for Dmytro : use testing module instead of real module */
+
+  let open, closed, all;
+
+  /* - */
+
+  a.ready.then( () => _.repo.issuesGet({ remotePath : repository, token }) );
+  a.ready.then( ( issues ) =>
+  {
+    test.case = 'get all issues, state - default';
+    all = issues.length;
+    test.ge( issues.length, 20 );
+    test.le( issues.length, 30 );
+    return null;
+  });
+
+  /* */
+
+  a.ready.then( () => _.repo.issuesGet({ remotePath : repository, state : 'all', token }) );
+  a.ready.then( ( issues ) =>
+  {
+    test.case = 'get all issues, state - all, as default';
+    test.ge( issues.length, 20 );
+    test.le( issues.length, 30 );
+    return null;
+  });
+
+  /* */
+
+  a.ready.then( () => _.repo.issuesGet({ remotePath : repository, state : 'open', token }) );
+  a.ready.then( ( issues ) =>
+  {
+    test.case = 'get opened issues';
+    open = issues.length;
+    test.ge( issues.length, 0 );
+    test.le( issues.length, all );
+    return null;
+  });
+
+  /* */
+
+  a.ready.then( () => _.repo.issuesGet({ remotePath : repository, state : 'closed', token }) );
+  a.ready.then( ( issues ) =>
+  {
+    test.case = 'get closed issues';
+    closed = issues.length;
+    test.ge( issues.length, 0 );
+    test.le( issues.length, all );
+    return null;
+  });
+
+  a.ready.finally( () =>
+  {
+    test.case = 'check balance of issues';
+    test.identical( all, open + closed );
+    return null;
+  });
+
+  /* - */
+
+  return a.ready;
+}
+
+issuesGet.timeOut = 10000;
+
+//
+
+function issuesCreate( test )
+{
+  const a = test.assetFor( 'basic' );
+
+  const token = process.env.PRIVATE_WTOOLS_BOT_TOKEN;
+  const trigger = __.test.workflowTriggerGet( a.abs( __dirname, '../../../..' ) );
+
+  if( !_.process.insideTestContainer() || trigger === 'pull_request' || !token )
+  return test.true( true );
+
+  const user = 'dmvict';
+  // const user = 'wtools-bot';
+  const repository = `https://github.com/${ user }/New-${ _.number.intRandom( 1000000 ) }`;
+
+  /* - */
+
+  repositoryInit( repository );
+  a.ready.then( () =>
+  {
+    test.case = 'issue - map';
+    var issues =
+    {
+      title : 'first',
+      body : 'it\'s issue',
+    };
+    return _.repo.issuesCreate({ remotePath : repository, token, issues });
+  });
+  a.ready.then( ( op ) =>
+  {
+    test.identical( _.props.keys( op ), [ 'status', 'url', 'headers', 'data' ] );
+    test.identical( op.status, 201 );
+    test.identical( op.data.title, 'first' );
+    test.identical( op.data.body, 'it\'s issue' );
+    return null;
+  }).delay( 3000 );
+  a.ready.then( () => _.repo.issuesGet({ remotePath : repository, state : 'all', token }) );
+  a.ready.then( ( issues ) =>
+  {
+    test.identical( issues.length, 1 );
+    test.identical( issues[ 0 ].title, 'first' );
+    test.identical( issues[ 0 ].body, 'it\'s issue' );
+    return null;
+  });
+  repositoryDelete( repository );
+
+  /* */
+
+  repositoryInit( repository );
+  a.ready.then( () =>
+  {
+    test.case = 'issue - array';
+    var issue1 =
+    {
+      title : 'first',
+      body : 'it\'s issue',
+    };
+    var issue2 =
+    {
+      title : 'second',
+      body : 'it\'s issue',
+    };
+    return _.repo.issuesCreate({ remotePath : repository, token, issues : [ issue1, issue2 ] });
+  });
+  a.ready.then( ( op ) =>
+  {
+    test.identical( _.props.keys( op ), [ 'status', 'url', 'headers', 'data' ] );
+    test.identical( op.status, 201 );
+    test.identical( op.data.title, 'second' );
+    test.identical( op.data.body, 'it\'s issue' );
+    return null;
+  }).delay( 3000 );
+  a.ready.then( () => _.repo.issuesGet({ remotePath : repository, state : 'all', token }) );
+  a.ready.then( ( issues ) =>
+  {
+    test.identical( issues.length, 2 );
+    test.identical( issues[ 0 ].title, 'second' );
+    test.identical( issues[ 0 ].body, 'it\'s issue' );
+    test.identical( issues[ 1 ].title, 'first' );
+    test.identical( issues[ 1 ].body, 'it\'s issue' );
+    return null;
+  });
+  repositoryDelete( repository );
+
+  /* */
+
+  repositoryInit( repository );
+  a.ready.then( () =>
+  {
+    test.case = 'issue - single map in file';
+    var issues =
+    {
+      title : 'first',
+      body : 'it\'s issue',
+    };
+    let issuesPath = a.abs( 'file.json' );
+    a.fileProvider.fileWriteUnknown( issuesPath, issues );
+    return _.repo.issuesCreate({ remotePath : repository, token, issues : issuesPath });
+  });
+  a.ready.then( ( op ) =>
+  {
+    test.identical( _.props.keys( op ), [ 'status', 'url', 'headers', 'data' ] );
+    test.identical( op.status, 201 );
+    test.identical( op.data.title, 'first' );
+    test.identical( op.data.body, 'it\'s issue' );
+    return null;
+  }).delay( 3000 );
+  a.ready.then( () => _.repo.issuesGet({ remotePath : repository, state : 'all', token }) );
+  a.ready.then( ( issues ) =>
+  {
+    test.identical( issues.length, 1 );
+    test.identical( issues[ 0 ].title, 'first' );
+    test.identical( issues[ 0 ].body, 'it\'s issue' );
+    return null;
+  });
+  repositoryDelete( repository );
+
+  /* */
+
+  repositoryInit( repository );
+  a.ready.then( () =>
+  {
+    test.case = 'issue - array';
+    var issue1 =
+    {
+      title : 'first',
+      body : 'it\'s issue',
+    };
+    var issue2 =
+    {
+      title : 'second',
+      body : 'it\'s issue',
+    };
+    let issuesPath = a.abs( 'file.json' );
+    a.fileProvider.fileWriteUnknown( issuesPath, [ issue1, issue2 ] );
+    return _.repo.issuesCreate({ remotePath : repository, token, issues : issuesPath });
+  });
+  a.ready.then( ( op ) =>
+  {
+    test.identical( _.props.keys( op ), [ 'status', 'url', 'headers', 'data' ] );
+    test.identical( op.status, 201 );
+    test.identical( op.data.title, 'second' );
+    test.identical( op.data.body, 'it\'s issue' );
+    return null;
+  }).delay( 3000 );
+  a.ready.then( () => _.repo.issuesGet({ remotePath : repository, state : 'all', token }) );
+  a.ready.then( ( issues ) =>
+  {
+    test.identical( issues.length, 2 );
+    test.identical( issues[ 0 ].title, 'second' );
+    test.identical( issues[ 0 ].body, 'it\'s issue' );
+    test.identical( issues[ 1 ].title, 'first' );
+    test.identical( issues[ 1 ].body, 'it\'s issue' );
+    return null;
+  });
+  repositoryDelete( repository );
+
+  /* - */
+
+  return a.ready;
+
+  /* */
+
+  function repositoryDelete( remotePath )
+  {
+    a.ready.then( () => a.fileProvider.filesDelete( a.abs( '.' ) ) );
+    return a.ready.then( () =>
+    {
+      return _.git.repositoryDelete
+      ({
+        remotePath,
+        throwing : 0,
+        logger : 1,
+        dry : 0,
+        token,
+        attemptDelayMultiplier : 4,
+      });
+    });
+  }
+
+  /* */
+
+  function repositoryInit( remotePath )
+  {
+    return a.ready.then( () =>
+    {
+      return _.git.repositoryInit
+      ({
+        remotePath,
+        localPath : a.routinePath,
+        throwing : 1,
+        logger : 0,
+        dry : 0,
+        description : 'Test',
+        token,
+      });
+    });
+  }
+}
+
+issuesCreate.timeOut = 90000;
+
+//
+
 function pullListRemote( test )
 {
   const a = test.assetFor( 'basic' );
@@ -339,7 +618,8 @@ function pullListRemote( test )
   if( !validPlatform || !_.process.insideTestContainer() || trigger === 'pull_request' || !token || !validMajorVersion )
   return test.true( true );
 
-  const user = 'wtools-bot';
+  const user = 'dmvict';
+  // const user = 'wtools-bot';
   const repository = `https://github.com/${ user }/New-${ _.number.intRandom( 1000000 ) }`;
 
   /* - */
@@ -593,7 +873,7 @@ function pullOpen( test )
       throwing : 1,
       sync : 1,
       token : 'token',
-      remotePath : 'https://gitlab.com/user/NewRepoBasic',
+      remotePath : 'https://gitlab.com/user/NewRepo',
       title : 'master',
       body : null,
       srcBranch : 'doc',
@@ -609,7 +889,7 @@ function pullOpen( test )
       throwing : 1,
       sync : 1,
       token : 'token',
-      remotePath : 'https://github.com/user/NewRepoBasic',
+      remotePath : 'https://github.com/user/NewRepo',
       title : 'master',
       body : null,
       srcBranch : 'doc',
@@ -624,7 +904,7 @@ function pullOpen( test )
     ({
       sync : 1,
       token : 'token',
-      remotePath : 'https://github.com/user/NewRepoBasic',
+      remotePath : 'https://github.com/user/NewRepo',
       dstBranch : 'master',
     });
   })
@@ -634,7 +914,7 @@ function pullOpen( test )
   {
     _.git.pullOpen
     ({
-      remotePath : 'https://github.com/user/NewRepoBasic',
+      remotePath : 'https://github.com/user/NewRepo',
       title : 'master',
       body : null,
       srcBranch : 'doc',
@@ -659,7 +939,8 @@ function pullOpenRemote( test )
   if( !validPlatform || !_.process.insideTestContainer() || trigger === 'pull_request' || !token || !validMajorVersion )
   return test.true( true );
 
-  const user = 'wtools-bot';
+  const user = 'dmvict';
+  // const user = 'wtools-bot';
   const repository = `https://github.com/${ user }/New-${ _.number.intRandom( 1000000 ) }`;
 
   a.reflect();
@@ -874,7 +1155,8 @@ function releaseMakeOnRemote( test )
   if( !validPlatform || !_.process.insideTestContainer() || trigger === 'pull_request' || !token || !validMajorVersion )
   return test.true( true );
 
-  const user = 'wtools-bot';
+  const user = 'dmvict';
+  // const user = 'wtools-bot';
   let repository = `https://github.com/${ user }/New-${ _.number.intRandom( 1000000 ) }`;
 
   a.reflect();
@@ -975,7 +1257,8 @@ function releaseDeleteOnRemote( test )
   if( !validPlatform || !_.process.insideTestContainer() || trigger === 'pull_request' || !token || !validMajorVersion )
   return test.true( true );
 
-  const user = 'wtools-bot';
+  const user = 'dmvict';
+  // const user = 'wtools-bot';
   const repository = `https://github.com/${ user }/New-${ _.number.intRandom( 1000000 ) }`;
 
   a.reflect();
@@ -1078,6 +1361,185 @@ function releaseDeleteOnRemote( test )
 }
 
 releaseDeleteOnRemote.timeOut = 60000;
+
+//
+
+function repositoryInit( test )
+{
+  const a = test.assetFor( 'basic' );
+
+  const token = process.env.PRIVATE_WTOOLS_BOT_TOKEN;
+  const trigger = __.test.workflowTriggerGet( a.abs( __dirname, '../../../..' ) );
+  if( !_.process.insideTestContainer() || trigger === 'pull_request' || !token )
+  return test.true( true );
+
+  const user = 'dmvict';
+  // const user = 'wtools-bot';
+  const repository = `https://github.com/${ user }/New-${ _.number.intRandom( 1000000 ) }`;
+
+  /* - */
+
+  a.ready.then( () =>
+  {
+    test.case = 'create remote repository, without description';
+    a.reflect();
+    return null;
+  });
+  a.ready.then( () =>
+  {
+    return _.repo.repositoryInit
+    ({
+      remotePath : repository,
+      token,
+      throwing : 1,
+    });
+  }).delay( 3000 );
+  a.ready.then( ( op ) =>
+  {
+    test.identical( op.status, 201 );
+    test.true( _.git.isRepository({ remotePath : repository }) );
+    return null;
+  });
+  repositoryDelete( repository );
+
+  /* */
+
+  a.ready.then( () =>
+  {
+    test.case = 'create remote repository, with description';
+    a.reflect();
+    return null;
+  });
+  a.ready.then( () =>
+  {
+    return _.repo.repositoryInit
+    ({
+      remotePath : repository,
+      description : 'Test',
+      token,
+      throwing : 1,
+    });
+  }).delay( 3000 );
+  a.ready.then( ( op ) =>
+  {
+    test.identical( op.status, 201 );
+    test.true( _.git.isRepository({ remotePath : repository }) );
+    return null;
+  });
+  repositoryDelete( repository );
+
+  /* - */
+
+  return a.ready;
+
+  /* */
+
+  function repositoryDelete( remotePath )
+  {
+    return a.ready.finally( () =>
+    {
+      return _.git.repositoryDelete
+      ({
+        remotePath,
+        throwing : 0,
+        logger : 1,
+        dry : 0,
+        token,
+        attemptDelayMultiplier : 4,
+      });
+    });
+  }
+}
+
+repositoryInit.timeOut = 90000;
+
+
+//
+
+function repositoryDelete( test )
+{
+  const a = test.assetFor( 'basic' );
+
+  const token = process.env.PRIVATE_WTOOLS_BOT_TOKEN;
+  const trigger = __.test.workflowTriggerGet( a.abs( __dirname, '../../../..' ) );
+  if( !_.process.insideTestContainer() || trigger === 'pull_request' || !token )
+  return test.true( true );
+
+  const user = 'dmvict';
+  // const user = 'wtools-bot';
+  const repository = `https://github.com/${ user }/New-${ _.number.intRandom( 1000000 ) }`;
+
+  /* - */
+
+  a.ready.then( () =>
+  {
+    test.case = 'delete remote repository';
+    a.reflect();
+    return null;
+  });
+  repositoryForm();
+  a.ready.then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( op.output, '' );
+    test.true( _.git.isRepository({ remotePath : repository }) );
+    return null;
+  });
+  a.ready.then( () =>
+  {
+    return _.repo.repositoryDelete
+    ({
+      remotePath : repository,
+      throwing : 1,
+      token,
+    });
+  });
+  a.ready.then( ( op ) =>
+  {
+    test.identical( op.data, undefined );
+    test.identical( op.status, 204 );
+    test.false( _.git.isRepository({ remotePath : repository }) );
+    return null;
+  });
+
+  /* - */
+
+  return a.ready;
+
+  /* */
+
+  function repositoryForm()
+  {
+    a.ready.then( () =>
+    {
+      return _.git.repositoryDelete
+      ({
+        remotePath : repository,
+        throwing : 0,
+        logger : 1,
+        dry : 0,
+        token,
+        attemptDelayMultiplier : 4,
+      });
+    });
+    a.ready.then( () =>
+    {
+      return _.git.repositoryInit
+      ({
+        remotePath : repository,
+        localPath : a.routinePath,
+        throwing : 1,
+        logger : 0,
+        dry : 0,
+        description : 'Test',
+        token,
+      });
+    });
+    return a.ready;
+  }
+}
+
+repositoryDelete.timeOut = 30000;
 
 //
 
@@ -1219,6 +1681,9 @@ const Proto =
 
     providerForPath,
 
+    issuesGet,
+    issuesCreate,
+
     pullListRemote,
 
     pullOpen,
@@ -1226,6 +1691,9 @@ const Proto =
 
     releaseMakeOnRemote,
     releaseDeleteOnRemote,
+
+    repositoryInit,
+    repositoryDelete,
 
     vcsFor,
   },
