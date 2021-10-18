@@ -1,7 +1,7 @@
 
-# module::GitTools  [![status](https://github.com/Wandalen/wRepoBasic/actions/workflows/StandardPublish.yml/badge.svg)](https://github.com/Wandalen/wRepoBasic/actions/workflows/StandardPublish.yml) [![stable](https://img.shields.io/badge/stability-stable-brightgreen.svg)](https://github.com/emersion/stability-badges#stable)
+# module::RepoBasic  [![status](https://github.com/Wandalen/wRepoBasic/actions/workflows/StandardPublish.yml/badge.svg)](https://github.com/Wandalen/wRepoBasic/actions/workflows/StandardPublish.yml) [![stable](https://img.shields.io/badge/stability-stable-brightgreen.svg)](https://github.com/emersion/stability-badges#stable)
 
-Collection of tools to use git programmatically.
+Collection of tools to operate over remote git repositories programmatically.
 
 ### Try out from the repository
 
