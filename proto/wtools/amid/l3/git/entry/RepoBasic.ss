@@ -1,4 +1,4 @@
-( function _GitTools_ss_()
+( function _RepoBasic_ss_()
 {
 
 'use strict';
@@ -10,7 +10,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  const _ = require( '../include/Mid.ss' );
+  const _ = require( '../include/RepoMid.ss' );
   module[ 'exports' ] = _global_.wTools;
 }
 
