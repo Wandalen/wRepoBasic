@@ -28,8 +28,9 @@
     "url": "https://github.com/Wandalen/wRepoBasic/issues"
   },
   "dependencies": {
+    "wTools": "",
     "wfilesbasic": "",
-    "wgittools": "",
+    "wgitpath": "",
     "@octokit/rest": "=18.5.2"
   },
   "devDependencies": {
