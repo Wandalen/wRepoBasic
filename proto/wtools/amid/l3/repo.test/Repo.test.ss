@@ -1688,7 +1688,7 @@ const Proto =
     repositoryInit,
     repositoryDelete,
 
-    vcsFor,
+    // vcsFor, /* qqq2 : for Dmytro : resolve routine module */
   },
 
 };
