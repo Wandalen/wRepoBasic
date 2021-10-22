@@ -1,9 +1,19 @@
+
 if( typeof 'module' !== undefined )
 require( 'wrepobasic' );
 
-let _ = wTools;
+/* */
 
-let localPath = _.path.join( __dirname, '..' );
-var isRepository =  _.git.isRepository({ localPath });
+const _ = wTools;
 
-console.log( `Current directory ${ localPath } is a Git repository : ${ isRepository }` );
+_.repo.issuesGet
+({
+  remotePath : 'https://github.com/Wandalen/wRepoBasic.git',
+  state : 'open',
+})
+.then( ( issues ) =>
+{
+  console.log( `Repository has ${ issues.length } opened issues.` );
+  return null;
+});
+

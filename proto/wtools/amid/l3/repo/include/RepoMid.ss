@@ -9,10 +9,7 @@ if( typeof module !== 'undefined' )
 {
   const _ = require( '../../../../../node_modules/Tools' );
 
-  require( './Basic.ss' );
-  require( '../l1/Git.ss' );
-  require( '../l1/Md.s' );
-  require( '../l1/Path.ss' );
+  require( './RepoBasic.ss' );
   require( '../l1/Repo.s' );
   require( '../l3_provider/Git.s' );
   require( '../l3_provider/Github.s' );
