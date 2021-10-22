@@ -10,7 +10,7 @@
   "license": "MIT",
   "main": "proto/node_modules/wrepobasic",
   "files": [
-    "proto/wtools/amid/l3/git",
+    "proto/wtools/amid/l3/repo",
     "out",
     "proto/node_modules",
     "proto/node_modules/Tools",

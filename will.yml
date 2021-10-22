@@ -134,7 +134,7 @@ path:
       raw: compiled
       content: prime
   entry.proto.no.tests:
-    path: proto/wtools/amid/l3/git/entry/RepoBasic.ss
+    path: proto/wtools/amid/l3/repo/entry/RepoBasic.ss
     criterion:
       tests: no.tests
   entry.proto.only.tests:
@@ -142,7 +142,7 @@ path:
     criterion:
       tests: only.tests
   entry.out.raw.debug:
-    path: '{path::out.*=1}/source/wtools/amid/l3/git/entry/RepoBasic.ss'
+    path: '{path::out.*=1}/source/wtools/amid/l3/repo/entry/RepoBasic.ss'
     criterion:
       debug:
         - debug
@@ -158,7 +158,7 @@ path:
       raw: compiled
       content: prime
   npm.proto.entry:
-    - proto/wtools/amid/l3/git/entry/RepoBasic.ss
+    - proto/wtools/amid/l3/repo/entry/RepoBasic.ss
     - proto/node_modules/wrepobasic
 reflector:
   reflect.proto:
