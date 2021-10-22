@@ -1,6 +1,6 @@
 {
   "name": "wrepobasic",
-  "version": "0.3.381",
+  "version": "0.3.382",
   "description": "Collection of tools to operate over remote git repositories programmatically.",
   "author": "Kostiantyn Wandalen <wanalen@01.school>",
   "contributors": [

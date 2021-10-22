@@ -1,12 +1,16 @@
 {
   "name": "wrepobasic",
-  "version": "0.3.380",
-  "description": "Collection of tools to use git programmatically.",
+  "version": "0.3.382",
+  "description": "Collection of tools to operate over remote git repositories programmatically.",
   "author": "Kostiantyn Wandalen <wanalen@01.school>",
+  "contributors": [
+    "Kostiantyn Wandalen <wanalen@01.school>",
+    "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>"
+  ],
   "license": "MIT",
   "main": "proto/node_modules/wrepobasic",
   "files": [
-    "proto/wtools/amid/l3/git",
+    "proto/wtools/amid/l3/repo",
     "out",
     "proto/node_modules",
     "proto/node_modules/Tools",
@@ -25,13 +29,8 @@
   },
   "dependencies": {
     "wTools": "gamma",
-    "wremote": "gamma",
-    "wprocess": "gamma",
-    "wintrospectorextra": "gamma",
+    "wgitpath": "gamma",
     "wfilesbasic": "gamma",
-    "wfilesarchive": "gamma",
-    "wCopyable": "gamma",
-    "ini": "=2.0.0",
     "@octokit/rest": "=18.5.2"
   },
   "devDependencies": {
@@ -39,6 +38,8 @@
     "eslint": "7.32.0"
   },
   "keywords": [
-    "wTools"
+    "wTools",
+    "git",
+    "repository"
   ]
 }
