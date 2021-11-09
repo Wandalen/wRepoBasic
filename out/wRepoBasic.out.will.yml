@@ -3,8 +3,8 @@ root:
   - wRepoBasic.out
 consistency:
   ../will.yml: &ref_0
-    hash: 7fb1f16ffcf012bdfce0936ddbcf7970
-    size: 6673
+    hash: 18dc7b4e2e0ba1b72d3fb70ecc8f66f3
+    size: 6543
 module:
   wRepoBasic.out:
     about:
@@ -13,7 +13,7 @@ module:
       description: >-
         Collection of tools to operate over remote git repositories
         programmatically.
-      enabled: 0
+      enabled: 1
       version: 0.4.0
       license: MIT
       npm.name: wrepobasic
@@ -195,7 +195,7 @@ module:
         autoExporting: 0
         enabled: 0
       '@octokit':
-        path: 'npm:///@octokit/rest#=18.5.2'
+        path: 'npm:///@octokit/rest!=18.5.2'
         autoExporting: 0
         enabled: 0
       wTesting:
@@ -391,9 +391,6 @@ module:
           content: npm
         inherit:
           - module.export
-      npm.publish:
-        opts:
-          shell: npm publish
       npm.generate.debug.raw:
         opts:
           entryPath: 'path::entry.out.*=1'
@@ -730,12 +727,6 @@ module:
         criterion:
           content: doc
           export: 1
-      npm.export:
-        steps:
-          - 'step::npm.publish'
-        criterion:
-          content: npm
-          export: 1
       export:
         steps:
           - 'build::proto.export'
@@ -813,7 +804,7 @@ module:
       description: >-
         Collection of tools to operate over remote git repositories
         programmatically.
-      enabled: 0
+      enabled: 1
       version: 0.4.0
       license: MIT
       npm.name: wrepobasic
@@ -945,7 +936,7 @@ module:
         autoExporting: 0
         enabled: 0
       '@octokit':
-        path: 'npm:///@octokit/rest#=18.5.2'
+        path: 'npm:///@octokit/rest!=18.5.2'
         autoExporting: 0
         enabled: 0
       wTesting:
@@ -1090,9 +1081,6 @@ module:
           content: npm
         inherit:
           - module.export
-      npm.publish:
-        opts:
-          shell: npm publish
       npm.generate.debug.raw:
         opts:
           entryPath: 'path::entry.out.*=1'
@@ -1429,12 +1417,6 @@ module:
         criterion:
           content: doc
           export: 1
-      npm.export:
-        steps:
-          - 'step::npm.publish'
-        criterion:
-          content: npm
-          export: 1
       export:
         steps:
           - 'build::proto.export'
@@ -1492,5 +1474,5 @@ module:
           - 'build::npm'
     consistency:
       ../will.yml:
-        hash: 7fb1f16ffcf012bdfce0936ddbcf7970
-        size: 6673
+        hash: 18dc7b4e2e0ba1b72d3fb70ecc8f66f3
+        size: 6543
