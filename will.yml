@@ -4,7 +4,7 @@ about:
     Collection of tools to operate over remote git repositories
     programmatically.
   version: 0.4.0
-  enabled: 0
+  enabled: 1
   license: MIT
   npm.name: wrepobasic
   author: Kostiantyn Wandalen <wanalen@01.school>
@@ -293,7 +293,7 @@ submodule:
     path: 'npm:///wgitpath'
     enabled: 0
   '@octokit':
-    path: 'npm:///@octokit/rest#=18.5.2'
+    path: 'npm:///@octokit/rest!=18.5.2'
     enabled: 0
   wTesting:
     path: 'npm:///wTesting'

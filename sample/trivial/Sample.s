@@ -10,6 +10,7 @@ const token = process.env.PRIVATE_WTOOLS_BOT_TOKEN;
 if( !token )
 {
   console.log( 'Please, export token "PRIVATE_WTOOLS_BOT_TOKEN" before sample run.' );
+  return;
 }
 
 _.repo.issuesGet
