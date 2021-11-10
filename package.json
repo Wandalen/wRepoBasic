@@ -1,6 +1,6 @@
 {
   "name": "wrepobasic",
-  "version": "0.3.386",
+  "version": "0.3.387",
   "description": "Collection of tools to operate over remote git repositories programmatically.",
   "author": "Kostiantyn Wandalen <wanalen@01.school>",
   "contributors": [
@@ -28,13 +28,13 @@
     "url": "https://github.com/Wandalen/wRepoBasic/issues"
   },
   "dependencies": {
-    "wTools": "latest",
-    "wgitpath": "latest",
-    "wfilesbasic": "latest",
+    "wTools": "alpha",
+    "wgitpath": "alpha",
+    "wfilesbasic": "alpha",
     "@octokit/rest": "=18.5.2"
   },
   "devDependencies": {
-    "wTesting": "latest",
+    "wTesting": "alpha",
     "eslint": "7.32.0"
   },
   "keywords": [
