@@ -205,99 +205,99 @@ function providerForPath( test )
   /* */
 
   test.case = 'remotePath - git, github, no protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'git@github.com:user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'git@github.com:user/repo.git' ) });
   test.identical( got, _.repo.provider.github );
 
   test.case = 'remotePath - git, github, git protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'git://git@github.com:user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'git://git@github.com:user/repo.git' ) });
   test.identical( got, _.repo.provider.github );
 
   test.case = 'remotePath - git, github, https protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'https://github.com/user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'https://github.com/user/repo.git' ) });
   test.identical( got, _.repo.provider.github );
 
   test.case = 'remotePath - git, github, git+https protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'git+https://git@github.com/user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'git+https://git@github.com/user/repo.git' ) });
   test.identical( got, _.repo.provider.github );
 
   test.case = 'remotePath - git, github, ssh protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'ssh://git@github.com/user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'ssh://git@github.com/user/repo.git' ) });
   test.identical( got, _.repo.provider.github );
 
   test.case = 'remotePath - git, github, git+ssh protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'git+ssh://git@github.com/user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'git+ssh://git@github.com/user/repo.git' ) });
   test.identical( got, _.repo.provider.github );
 
   /* */
 
   test.case = 'remotePath - git, gitlab, no protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'git@gitlab.com:user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'git@gitlab.com:user/repo.git' ) });
   test.identical( got, _.repo.provider.git );
 
   test.case = 'remotePath - git, gitlab, git protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'git://git@gitlab.com:user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'git://git@gitlab.com:user/repo.git' ) });
   test.identical( got, _.repo.provider.git );
 
   test.case = 'remotePath - git, gitlab, https protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'https://gitlab.com/user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'https://gitlab.com/user/repo.git' ) });
   test.identical( got, _.repo.provider.git );
 
   test.case = 'remotePath - git, gitlab, git+https protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'git+https://git@gitlab.com/user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'git+https://git@gitlab.com/user/repo.git' ) });
   test.identical( got, _.repo.provider.git );
 
   test.case = 'remotePath - git, gitlab, ssh protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'ssh://git@gitlab.com/user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'ssh://git@gitlab.com/user/repo.git' ) });
   test.identical( got, _.repo.provider.git );
 
   test.case = 'remotePath - git, gitlab, git+ssh protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'git+ssh://git@gitlab.com/user/repo.git' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'git+ssh://git@gitlab.com/user/repo.git' ) });
   test.identical( got, _.repo.provider.git );
 
   /* */
 
   test.case = 'remotePath - npm';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'npm://wmodulefortesting1' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'npm://wmodulefortesting1' ) });
   test.identical( got, _.repo.provider.npm );
 
   test.case = 'remotePath - global, npm';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'npm:///wmodulefortesting1' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'npm:///wmodulefortesting1' ) });
   test.identical( got, _.repo.provider.npm );
 
   /* */
 
   test.case = 'remotePath - http';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'http://remote-path.com' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'http://remote-path.com' ) });
   test.identical( got, _.repo.provider.http );
 
   test.case = 'remotePath - global, http';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'http:///remote-path.com' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'http:///remote-path.com' ) });
   test.identical( got, _.repo.provider.http );
 
   test.case = 'remotePath - https';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'https://remote-path.com' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'https://remote-path.com' ) });
   test.identical( got, _.repo.provider.http );
 
   test.case = 'remotePath - global, https';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'https:///remote-path.com' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'https:///remote-path.com' ) });
   test.identical( got, _.repo.provider.http );
 
   /* */
 
   test.case = 'remotePath - empty string';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( '' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( '' ) });
   test.identical( got, _.repo.provider.hd );
 
   test.case = 'remotePath - local hard drive path';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( '/a/b/c' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( '/a/b/c' ) });
   test.identical( got, _.repo.provider.hd );
 
   test.case = 'remotePath - hard drive path with protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'hd://a/b/c' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'hd://a/b/c' ) });
   test.identical( got, _.repo.provider.hd );
 
   test.case = 'remotePath - global hard drive path with protocol';
-  var got = _.repo.providerForPath({ remotePath : _.git.path.parse( 'file:///a/b/c' ) });
+  var got = _.repo.providerForPath({ remotePath : __.git.path.parse( 'file:///a/b/c' ) });
   test.identical( got, _.repo.provider.hd );
 
   test.close( 'remote path - map' );
@@ -567,7 +567,7 @@ function issuesCreate( test )
     a.ready.then( () => a.fileProvider.filesDelete( a.abs( '.' ) ) );
     return a.ready.then( () =>
     {
-      return _.git.repositoryDelete
+      return __.git.repositoryDelete
       ({
         remotePath,
         throwing : 0,
@@ -585,7 +585,7 @@ function issuesCreate( test )
   {
     return a.ready.then( () =>
     {
-      return _.git.repositoryInit
+      return __.git.repositoryInit
       ({
         remotePath,
         localPath : a.routinePath,
@@ -790,7 +790,7 @@ function pullListRemote( test )
   {
     return a.ready.then( () =>
     {
-      return _.git.repositoryDelete
+      return __.git.repositoryDelete
       ({
         remotePath,
         throwing : 0,
@@ -808,7 +808,7 @@ function pullListRemote( test )
   {
     return a.ready.then( () =>
     {
-      return _.git.repositoryInit
+      return __.git.repositoryInit
       ({
         remotePath,
         localPath : a.routinePath,
@@ -869,8 +869,7 @@ function pullExportStringWithRemote( test )
   if( !validPlatform || !_.process.insideTestContainer() || trigger === 'pull_request' || !token || !validMajorVersion )
   return test.true( true );
 
-  const user = 'dmvict';
-  // const user = 'wtools-bot';
+  const user = 'wtools-bot';
   const repository = `https://github.com/${ user }/New-${ _.number.intRandom( 1000000 ) }`;
 
   /* - */
@@ -1224,7 +1223,7 @@ function pullOpenRemote( test )
   {
     return a.ready.finally( () =>
     {
-      return _.git.repositoryDelete
+      return __.git.repositoryDelete
       ({
         remotePath,
         throwing : 0,
@@ -1242,7 +1241,7 @@ function pullOpenRemote( test )
   {
     return a.ready.then( () =>
     {
-      return _.git.repositoryInit
+      return __.git.repositoryInit
       ({
         remotePath,
         localPath : a.routinePath,
@@ -1341,7 +1340,7 @@ function releaseMakeOnRemote( test )
   {
     return a.ready.then( () =>
     {
-      return _.git.repositoryDelete
+      return __.git.repositoryDelete
       ({
         remotePath,
         throwing : 0,
@@ -1358,7 +1357,7 @@ function releaseMakeOnRemote( test )
   {
     return a.ready.then( () =>
     {
-      return _.git.repositoryInit
+      return __.git.repositoryInit
       ({
         remotePath,
         localPath : a.routinePath,
@@ -1447,7 +1446,7 @@ function releaseDeleteOnRemote( test )
   {
     return a.ready.finally( () =>
     {
-      return _.git.repositoryDelete
+      return __.git.repositoryDelete
       ({
         remotePath,
         throwing : 0,
@@ -1464,7 +1463,7 @@ function releaseDeleteOnRemote( test )
   {
     return a.ready.then( () =>
     {
-      return _.git.repositoryInit
+      return __.git.repositoryInit
       ({
         remotePath,
         localPath : a.routinePath,
@@ -1528,7 +1527,7 @@ function repositoryInit( test )
   a.ready.then( ( op ) =>
   {
     test.identical( op.status, 201 );
-    test.true( _.git.isRepository({ remotePath : repository }) );
+    test.true( __.git.isRepository({ remotePath : repository }) );
     return null;
   });
   repositoryDelete( repository );
@@ -1554,7 +1553,7 @@ function repositoryInit( test )
   a.ready.then( ( op ) =>
   {
     test.identical( op.status, 201 );
-    test.true( _.git.isRepository({ remotePath : repository }) );
+    test.true( __.git.isRepository({ remotePath : repository }) );
     return null;
   });
   repositoryDelete( repository );
@@ -1569,7 +1568,7 @@ function repositoryInit( test )
   {
     return a.ready.finally( () =>
     {
-      return _.git.repositoryDelete
+      return __.git.repositoryDelete
       ({
         remotePath,
         throwing : 0,
@@ -1612,7 +1611,7 @@ function repositoryDelete( test )
   {
     test.identical( op.exitCode, 0 );
     test.identical( op.output, '' );
-    test.true( _.git.isRepository({ remotePath : repository }) );
+    test.true( __.git.isRepository({ remotePath : repository }) );
     return null;
   });
   a.ready.then( () =>
@@ -1628,7 +1627,7 @@ function repositoryDelete( test )
   {
     test.identical( op.data, undefined );
     test.identical( op.status, 204 );
-    test.false( _.git.isRepository({ remotePath : repository }) );
+    test.false( __.git.isRepository({ remotePath : repository }) );
     return null;
   });
 
@@ -1642,7 +1641,7 @@ function repositoryDelete( test )
   {
     a.ready.then( () =>
     {
-      return _.git.repositoryDelete
+      return __.git.repositoryDelete
       ({
         remotePath : repository,
         throwing : 0,
@@ -1654,7 +1653,7 @@ function repositoryDelete( test )
     });
     a.ready.then( () =>
     {
-      return _.git.repositoryInit
+      return __.git.repositoryInit
       ({
         remotePath : repository,
         localPath : a.routinePath,
