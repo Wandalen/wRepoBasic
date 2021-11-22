@@ -961,36 +961,29 @@ let programList = _request_functor
 
 function vcsFor( o )
 {
-  if( !_.mapIs( o ) )
+  if( !_.map.is( o ) )
   o = { filePath : o };
 
   _.assert( arguments.length === 1 );
   _.routine.options( vcsFor, o );
 
-  if( _.arrayIs( o.filePath ) && o.filePath.length === 0 )
+  if( _.array.is( o.filePath ) && o.filePath.length === 0 )
   return null;
 
   if( !o.filePath )
   return null;
 
-  _.assert( _.strIs( o.filePath ) );
+  _.assert( _.str.is( o.filePath ) );
   _.assert( _.git.path.isGlobal( o.filePath ) );
-  // _.assert( _.uri.isGlobal( o.filePath ) );
 
   let parsed = _.git.path.parse( o.filePath );
-  // let parsed = _.uri.parseFull( o.filePath );
 
-  if( _.git && _.longHas( _.git.protocols, parsed.protocol ) )
+  if( _.git && _.git.protocols && _.longHas( _.git.protocols, parsed.protocol ) )
   return _.git;
-  if( _.npm && _.longHasAny( _.npm.protocols, parsed.protocol ) )
+  if( _.npm && _.npm.protocols && _.longHasAny( _.npm.protocols, parsed.protocol ) )
   return _.npm;
-  if( _.http && _.longHasAny( _.http.protocols, parsed.protocol ) )
+  if( _.http && _.http.protocols && _.longHasAny( _.http.protocols, parsed.protocol ) )
   return _.http;
-
-  // if( _.git && _.longHasAny( parsed.protocols, _.git.protocols ) )
-  // return _.git;
-  // if( _.npm && _.longHasAny( parsed.protocols, _.npm.protocols ) )
-  // return _.npm;
 
   return null;
 }
