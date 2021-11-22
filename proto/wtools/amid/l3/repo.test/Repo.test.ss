@@ -1682,35 +1682,35 @@ function vcsFor( test )
 
   test.case = 'git';
   var vcs = _.repo.vcsFor( 'git:///' );
-  if( _.git )
+  if( _.git && _.git.protocols )
   test.identical( vcs, _.git );
   else
   test.identical( vcs, null );
 
   test.case = 'git+https';
   var vcs = _.repo.vcsFor( 'git+https:///' );
-  if( _.git )
+  if( _.git && _.git.protocols )
   test.identical( vcs, _.git );
   else
   test.identical( vcs, null );
 
   test.case = 'git+ssh';
   var vcs = _.repo.vcsFor( 'git+ssh:///' );
-  if( _.git )
+  if( _.git && _.git.protocols )
   test.identical( vcs, _.git );
   else
   test.identical( vcs, null );
 
   test.case = 'git+hd';
   var vcs = _.repo.vcsFor( 'git+hd:///' );
-  if( _.git )
+  if( _.git && _.git.protocols )
   test.identical( vcs, _.git );
   else
   test.identical( vcs, null );
 
   test.case = 'git+file';
   var vcs = _.repo.vcsFor( 'git+file:///' );
-  if( _.git )
+  if( _.git && _.git.protocols )
   test.identical( vcs, _.git );
   else
   test.identical( vcs, null );
@@ -1825,7 +1825,7 @@ const Proto =
     repositoryInit,
     repositoryDelete,
 
-    // vcsFor, /* qqq2 : for Dmytro : resolve routine module */
+    vcsFor, /* qqq2 : for Dmytro : resolve routine module */
   },
 
 };
