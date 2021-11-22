@@ -437,17 +437,12 @@ function pullExportString_body( element, o )
   if( o.verbosity <= 0 )
   return '';
 
-  // let name = _.ct.format( `name::`, o.secondaryStyle ) + element.name;
-  // let id = `program#${element.id}`;
-  // let state = _.ct.format( `state::`, o.secondaryStyle ) + element.state;
-  // let service = _.ct.format( `service::`, o.secondaryStyle ) + element.service;
-  // let result = `${id} ${name} ${state} ${service}`;
-
   let id = `pr#${element.id}`;
-  let from = _.ct.format( 'from::', o.secondaryStyle ) + element.from.name;
+  let fromUser = _.ct.format( 'from_user::', o.secondaryStyle ) + element.from.name;
+  let fromBranch = _.ct.format( 'from_branch::', o.secondaryStyle ) + element.from.tag;
   let to = _.ct.format( 'to::', o.secondaryStyle ) + element.to.tag;
   let description = _.ct.format( 'description::', o.secondaryStyle ) + element.description.head;
-  let result = `${id} ${from} ${to} ${description} `;
+  let result = `${ id } ${ fromUser } ${ fromBranch } ${ to } ${ description }`;
 
   return result;
 }
@@ -457,7 +452,7 @@ pullExportString_body.defaults =
   secondaryStyle : 'tertiary',
   verbosity : 1,
   it : null,
-}
+};
 
 let pullExportString = _.routine.unite( 1, pullExportString_body );
 
@@ -472,7 +467,6 @@ let pullCollectionExportString = _collectionExportString_functor
 //
 
 let pullListAct = Object.create( null );
-
 pullListAct.name = 'pullListAct';
 pullListAct.defaults =
 {
@@ -481,7 +475,7 @@ pullListAct.defaults =
   sync : 1,
   withOpened : 1,
   withClosed : 0,
-}
+};
 
 //
 
@@ -489,7 +483,7 @@ let pullList = _request_functor
 ({
   description : 'get list of pull requests',
   act : pullListAct,
-})
+});
 
 //
 
@@ -943,7 +937,6 @@ let programCollectionExportString = _collectionExportString_functor
 //
 
 let programListAct = Object.create( null );
-
 programListAct.name = 'programListAct';
 programListAct.defaults =
 {
@@ -952,7 +945,7 @@ programListAct.defaults =
   sync : 1,
   withOpened : 1,
   withClosed : 0,
-}
+};
 
 //
 
@@ -960,7 +953,7 @@ let programList = _request_functor
 ({
   description : 'get list of programs',
   act : programListAct,
-})
+});
 
 // --
 // etc
