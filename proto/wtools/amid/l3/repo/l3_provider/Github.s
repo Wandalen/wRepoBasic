@@ -256,6 +256,7 @@ function _pullListResponseNormalize( o )
     r.to.hash = original.base.sha;
     r.from = Object.create( null );
     r.from.name = original.head.user.login;
+    r.from.tag = original.head.ref;
     r.id = original.number;
     return r;
   });

@@ -437,17 +437,12 @@ function pullExportString_body( element, o )
   if( o.verbosity <= 0 )
   return '';
 
-  // let name = _.ct.format( `name::`, o.secondaryStyle ) + element.name;
-  // let id = `program#${element.id}`;
-  // let state = _.ct.format( `state::`, o.secondaryStyle ) + element.state;
-  // let service = _.ct.format( `service::`, o.secondaryStyle ) + element.service;
-  // let result = `${id} ${name} ${state} ${service}`;
-
   let id = `pr#${element.id}`;
-  let from = _.ct.format( 'from::', o.secondaryStyle ) + element.from.name;
+  let fromUser = _.ct.format( 'from_user::', o.secondaryStyle ) + element.from.name;
+  let fromBranch = _.ct.format( 'from_branch::', o.secondaryStyle ) + element.from.tag;
   let to = _.ct.format( 'to::', o.secondaryStyle ) + element.to.tag;
   let description = _.ct.format( 'description::', o.secondaryStyle ) + element.description.head;
-  let result = `${id} ${from} ${to} ${description} `;
+  let result = `${ id } ${ fromUser } ${ fromBranch } ${ to } ${ description }`;
 
   return result;
 }
@@ -457,7 +452,7 @@ pullExportString_body.defaults =
   secondaryStyle : 'tertiary',
   verbosity : 1,
   it : null,
-}
+};
 
 let pullExportString = _.routine.unite( 1, pullExportString_body );
 
@@ -472,7 +467,6 @@ let pullCollectionExportString = _collectionExportString_functor
 //
 
 let pullListAct = Object.create( null );
-
 pullListAct.name = 'pullListAct';
 pullListAct.defaults =
 {
@@ -481,7 +475,7 @@ pullListAct.defaults =
   sync : 1,
   withOpened : 1,
   withClosed : 0,
-}
+};
 
 //
 
@@ -489,7 +483,7 @@ let pullList = _request_functor
 ({
   description : 'get list of pull requests',
   act : pullListAct,
-})
+});
 
 //
 
@@ -943,7 +937,6 @@ let programCollectionExportString = _collectionExportString_functor
 //
 
 let programListAct = Object.create( null );
-
 programListAct.name = 'programListAct';
 programListAct.defaults =
 {
@@ -952,7 +945,7 @@ programListAct.defaults =
   sync : 1,
   withOpened : 1,
   withClosed : 0,
-}
+};
 
 //
 
@@ -960,7 +953,7 @@ let programList = _request_functor
 ({
   description : 'get list of programs',
   act : programListAct,
-})
+});
 
 // --
 // etc
@@ -968,36 +961,29 @@ let programList = _request_functor
 
 function vcsFor( o )
 {
-  if( !_.mapIs( o ) )
+  if( !_.map.is( o ) )
   o = { filePath : o };
 
   _.assert( arguments.length === 1 );
   _.routine.options( vcsFor, o );
 
-  if( _.arrayIs( o.filePath ) && o.filePath.length === 0 )
+  if( _.array.is( o.filePath ) && o.filePath.length === 0 )
   return null;
 
   if( !o.filePath )
   return null;
 
-  _.assert( _.strIs( o.filePath ) );
+  _.assert( _.str.is( o.filePath ) );
   _.assert( _.git.path.isGlobal( o.filePath ) );
-  // _.assert( _.uri.isGlobal( o.filePath ) );
 
   let parsed = _.git.path.parse( o.filePath );
-  // let parsed = _.uri.parseFull( o.filePath );
 
-  if( _.git && _.longHas( _.git.protocols, parsed.protocol ) )
+  if( _.git && _.git.protocols && _.longHas( _.git.protocols, parsed.protocol ) )
   return _.git;
-  if( _.npm && _.longHasAny( _.npm.protocols, parsed.protocol ) )
+  if( _.npm && _.npm.protocols && _.longHasAny( _.npm.protocols, parsed.protocol ) )
   return _.npm;
-  if( _.http && _.longHasAny( _.http.protocols, parsed.protocol ) )
+  if( _.http && _.http.protocols && _.longHasAny( _.http.protocols, parsed.protocol ) )
   return _.http;
-
-  // if( _.git && _.longHasAny( parsed.protocols, _.git.protocols ) )
-  // return _.git;
-  // if( _.npm && _.longHasAny( parsed.protocols, _.npm.protocols ) )
-  // return _.npm;
 
   return null;
 }
