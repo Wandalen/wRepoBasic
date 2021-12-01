@@ -2,9 +2,9 @@
   "name": "wrepobasic",
   "version": "0.3.389",
   "description": "Collection of tools to operate over remote git repositories programmatically.",
-  "author": "Kostiantyn Wandalen <wanalen@01.school>",
+  "author": "Kostiantyn Wandalen <wandalen@obox.systems>",
   "contributors": [
-    "Kostiantyn Wandalen <wanalen@01.school>",
+    "Kostiantyn Wandalen <wandalen@obox.systems>",
     "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>"
   ],
   "license": "MIT",
